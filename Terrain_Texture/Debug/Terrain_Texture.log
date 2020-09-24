@@ -1,3 +1,4 @@
 ﻿  Terrain_Texture.cpp
 C:\Users\thoma\modelcreator\ModelCreator\Terrain_Texture\Terrain_Texture.cpp(88): warning C4715: 'SaveScene': not all control paths return a value
+C:\Users\thoma\modelcreator\ModelCreator\Terrain_Texture\Terrain_Texture.cpp(749): warning C4715: 'CreateMesh': not all control paths return a value
   Terrain_Texture.vcxproj -> C:\Users\thoma\modelcreator\ModelCreator\Debug\Terrain_Texture.exe
