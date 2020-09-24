@@ -156,7 +156,7 @@ void AddMaterials(FbxMesh* pMesh)
 	FbxStringList lUVSetNameList;
 	pMesh->GetUVSetNames(lUVSetNameList);
 
-	printf("get count %u \n", lUVSetNameList.GetCount());
+	// printf("get count %u \n", lUVSetNameList.GetCount());
 
 	// Set material mapping.
 	FbxGeometryElementMaterial* lMaterialElement = pMesh->CreateElementMaterial();
@@ -185,7 +185,7 @@ void AddMaterials(FbxMesh* pMesh)
 		// const bool lUseIndex = lUVElement->GetReferenceMode() != FbxGeometryElement::eDirect;
 		const bool lUseIndex = true;
 		const int lIndexCount = (lUseIndex) ? lUVElement->GetIndexArray().GetCount() : 0;
-		printf("Index count: %i \n", lIndexCount);
+		// printf("Index count: %i \n", lIndexCount);
 		
 
 		// iterate through the data by polygon
@@ -209,7 +209,7 @@ void AddMaterials(FbxMesh* pMesh)
 
 					lUVValue = lUVElement->GetDirectArray().GetAt(lUVIndex);
 
-					printf("%d", lUVValue.Length());
+					// printf("%d", lUVValue.Length());
 				}
 			}
 		}
@@ -239,15 +239,15 @@ void AddMaterials(FbxMesh* pMesh)
 						//User TODO:
 						//Print out the value of UV(lUVValue) or log it to a file
 
-						printf("Vertex from this polygon: %i ", lPolyIndex);
-						printf("UV data for this vertex: %i %i \n", lUVElement->GetDirectArray().GetAt(lUVIndex).mData[0], lUVElement->GetDirectArray().GetAt(lUVIndex).mData[1]);
+						// printf("Vertex from this polygon: %i ", lPolyIndex);
+						// printf("UV data for this vertex: %i %i \n", lUVElement->GetDirectArray().GetAt(lUVIndex).mData[0], lUVElement->GetDirectArray().GetAt(lUVIndex).mData[1]);
 
 						lPolyIndexCounter++;
 					}
 
 				}
 			}
-			printf("Poly index counter: %i \n", lPolyIndexCounter);
+			// printf("Poly index counter: %i \n", lPolyIndexCounter);
 		}
 	}
 	
@@ -287,10 +287,12 @@ FbxScene* CreateScene()
 FbxNode* CreateMesh(FbxScene* mScene)
 {
 	FbxString* mType = new FbxString("Pyramid");
-	if(mType->Compare("Pyramid"))
+	printf("Called CALLED CALLED CALLED \n");
+	if (true)
 	{
+		printf("OOKOKOKOKOKOKO \n");
 		int i, j;
-		FbxMesh* lMesh = FbxMesh::Create(mScene, "CreatedMesh");
+		FbxMesh* lMesh = FbxMesh::Create(mScene, "CreatedPyramidMesh");
 
 		FbxVector4 vertex0(-50, 0, 50);
 		FbxVector4 vertex1(50, 0, 50);
@@ -440,29 +442,30 @@ int main(int argc, char** argv)
 
 	CreateMaterial(lScene);
 
-	// Grab terrain mesh from scene
+	/* Grab terrain mesh from scene
 	FbxMesh* lMesh = lScene->GetRootNode()->GetChild(0)->GetMesh();
 
 	FbxNode* terrainNode = lScene->GetRootNode()->GetChild(0);
 
 	int count = lScene->GetRootNode()->GetChildCount();
-
+	*/
+	/*
 	if (lMesh->GetPolygonCount() > 0)
 	{
 		printf("Node visible, polygon count of %i \n", lMesh->GetPolygonCount());
 	}
 	else {
 		printf("Node not visible \n");
-	}
+	} */
 	
 
-	AddMaterials(lMesh);
+	// AddMaterials(lMesh);
 
 	// Export Scene
 
 	bool r;
 
-	r = SaveScene(lManager, lScene, "C:\\Users\\thoma\\modelcreator\\ModelCreator\\Debug\\terrainexported7.fbx", -1, false);
+	r = SaveScene(lManager, lSceneCreated, "C:\\Users\\thoma\\modelcreator\\ModelCreator\\Debug\\pyramidtest.fbx", -1, false);
 	if (r)
 	{
 		printf("Export succeeded \n");
