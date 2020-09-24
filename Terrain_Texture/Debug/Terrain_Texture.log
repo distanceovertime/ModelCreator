@@ -1,14 +1,15 @@
 ﻿  Terrain_Texture.cpp
-C:\Users\Thomas Twist\source\repos\Terrain_Texture\Terrain_Texture\Terrain_Texture.cpp(191,13): warning C4477: 'printf' : format string '%d' requires an argument of type 'int', but variadic argument 1 has type 'double'
-C:\Users\Thomas Twist\source\repos\Terrain_Texture\Terrain_Texture\Terrain_Texture.cpp(222,14): warning C4477: 'printf' : format string '%i' requires an argument of type 'int', but variadic argument 1 has type 'T'
+C:\Users\thoma\modelcreator\ModelCreator\Terrain_Texture\Terrain_Texture.cpp(212,13): warning C4477: 'printf' : format string '%d' requires an argument of type 'int', but variadic argument 1 has type 'double'
+C:\Users\thoma\modelcreator\ModelCreator\Terrain_Texture\Terrain_Texture.cpp(243,14): warning C4477: 'printf' : format string '%i' requires an argument of type 'int', but variadic argument 1 has type 'T'
           with
           [
               T=fbxsdk::FbxDouble
           ]
-C:\Users\Thomas Twist\source\repos\Terrain_Texture\Terrain_Texture\Terrain_Texture.cpp(222,14): warning C4477: 'printf' : format string '%i' requires an argument of type 'int', but variadic argument 2 has type 'T'
+C:\Users\thoma\modelcreator\ModelCreator\Terrain_Texture\Terrain_Texture.cpp(243,14): warning C4477: 'printf' : format string '%i' requires an argument of type 'int', but variadic argument 2 has type 'T'
           with
           [
               T=fbxsdk::FbxDouble
           ]
-C:\Users\Thomas Twist\source\repos\Terrain_Texture\Terrain_Texture\Terrain_Texture.cpp(89): warning C4715: 'SaveScene': not all control paths return a value
-  Terrain_Texture.vcxproj -> C:\Users\Thomas Twist\source\repos\Terrain_Texture\Debug\Terrain_Texture.exe
+C:\Users\thoma\modelcreator\ModelCreator\Terrain_Texture\Terrain_Texture.cpp(88): warning C4715: 'SaveScene': not all control paths return a value
+C:\Users\thoma\modelcreator\ModelCreator\Terrain_Texture\Terrain_Texture.cpp(401): warning C4715: 'CreateMesh': not all control paths return a value
+  Terrain_Texture.vcxproj -> C:\Users\thoma\modelcreator\ModelCreator\Debug\Terrain_Texture.exe

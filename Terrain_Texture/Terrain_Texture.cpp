@@ -27,7 +27,6 @@ bool SaveScene(FbxManager* pManager,
 	if (pFileFormat < 0 || pFileFormat >= pManager->GetIOPluginRegistry()->GetWriterFormatCount())
 	{
 		// Write in fall back format if pEmbedMedia is true
-		// ?????
 		pFileFormat = pManager->GetIOPluginRegistry()->GetNativeWriterFormat();
 
 		if (!pEmbedMedia)
@@ -92,7 +91,7 @@ void CreateTexture(FbxScene* pScene)
 {
 	gTexture = FbxFileTexture::Create(pScene, "Diffuse Texture");
 
-	FbxString lTexPath = "C:\\Users\\Thomas Twist\\source\\repos\\Terrain_Texture\\Debug\\texture4.jpg";
+	FbxString lTexPath = "C:\\Users\\thoma\\modelcreator\\ModelCreator\\Debug\\texture4.jpg";
 
 	gTexture->SetFileName(lTexPath.Buffer());
 	gTexture->SetTextureUse(FbxTexture::eStandard);
@@ -108,6 +107,28 @@ void CreateTexture(FbxScene* pScene)
 void CreateMaterial(FbxScene* pScene)
 {
 	FbxString lMaterialName = "material";
+	FbxString lShadingName = "Phong";
+	FbxDouble3 lBlack(0.0, 0.0, 0.0);
+	FbxDouble3 lRed(1.0, 0.0, 0.0);
+	FbxDouble3 lDiffuseColor(0.75, 0.75, 0.0);
+	gMaterial = FbxSurfacePhong::Create(pScene, lMaterialName.Buffer());
+
+	// Generate primary and secondary colors.
+	gMaterial->Emissive.Set(lBlack);
+	gMaterial->Ambient.Set(lRed);
+	gMaterial->Diffuse.Set(lDiffuseColor);
+	gMaterial->TransparencyFactor.Set(40.5);
+	gMaterial->ShadingModel.Set(lShadingName);
+	gMaterial->Shininess.Set(0.5);
+
+	// the texture need to be connected to the material on the corresponding property (in this case Diffuse)
+	if (gTexture)
+		gMaterial->Diffuse.ConnectSrcObject(gTexture);
+}
+
+void CreateSecondMaterial(FbxScene* pScene) 
+{
+	FbxString lMaterialName = "secondmaterial";
 	FbxString lShadingName = "Phong";
 	FbxDouble3 lBlack(0.0, 0.0, 0.0);
 	FbxDouble3 lRed(1.0, 0.0, 0.0);
@@ -252,6 +273,133 @@ void AddMaterials(FbxMesh* pMesh)
 	
 }
 
+FbxScene* CreateScene()
+{
+	// Create the SDK manager.
+	FbxManager* lSdkManager = FbxManager::Create();
+
+	// Create the scene.
+	FbxScene* lScene = FbxScene::Create(lSdkManager, "Created_Scene");
+
+	return lScene;
+}
+
+FbxNode* CreateMesh(FbxScene* mScene)
+{
+	FbxString* mType = new FbxString("Pyramid");
+	if(mType->Compare("Pyramid"))
+	{
+		int i, j;
+		FbxMesh* lMesh = FbxMesh::Create(mScene, "CreatedMesh");
+
+		FbxVector4 vertex0(-50, 0, 50);
+		FbxVector4 vertex1(50, 0, 50);
+		FbxVector4 vertex2(50, 0, -50);
+		FbxVector4 vertex3(-50, 0, -50);
+		FbxVector4 vertex4(0, 100, 0);
+
+		FbxVector4 lNormalP0(0, 1, 0);
+		FbxVector4 lNormalP1(0, 0.447, 0.894);
+		FbxVector4 lNormalP2(0.894, 0.447, 0);
+		FbxVector4 lNormalP3(0, 0.447, -0.894);
+		FbxVector4 lNormalP4(-0.894, 0.447, 0);
+
+		// Create control points.
+		lMesh->InitControlPoints(16);
+		FbxVector4* lControlPoints = lMesh->GetControlPoints();
+
+		lControlPoints[0] = vertex0;
+		lControlPoints[1] = vertex1;
+		lControlPoints[2] = vertex2;
+		lControlPoints[3] = vertex3;
+		lControlPoints[4] = vertex0;
+		lControlPoints[5] = vertex1;
+		lControlPoints[6] = vertex4;
+		lControlPoints[7] = vertex1;
+		lControlPoints[8] = vertex2;
+		lControlPoints[9] = vertex4;
+		lControlPoints[10] = vertex2;
+		lControlPoints[11] = vertex3;
+		lControlPoints[12] = vertex4;
+		lControlPoints[13] = vertex3;
+		lControlPoints[14] = vertex0;
+		lControlPoints[15] = vertex4;
+
+		// specify normals per control point.
+
+		FbxGeometryElementNormal* lNormalElement = lMesh->CreateElementNormal();
+		lNormalElement->SetMappingMode(FbxGeometryElement::eByControlPoint);
+		lNormalElement->SetReferenceMode(FbxGeometryElement::eDirect);
+
+		lNormalElement->GetDirectArray().Add(lNormalP0);
+		lNormalElement->GetDirectArray().Add(lNormalP0);
+		lNormalElement->GetDirectArray().Add(lNormalP0);
+		lNormalElement->GetDirectArray().Add(lNormalP0);
+		lNormalElement->GetDirectArray().Add(lNormalP1);
+		lNormalElement->GetDirectArray().Add(lNormalP1);
+		lNormalElement->GetDirectArray().Add(lNormalP1);
+		lNormalElement->GetDirectArray().Add(lNormalP2);
+		lNormalElement->GetDirectArray().Add(lNormalP2);
+		lNormalElement->GetDirectArray().Add(lNormalP2);
+		lNormalElement->GetDirectArray().Add(lNormalP3);
+		lNormalElement->GetDirectArray().Add(lNormalP3);
+		lNormalElement->GetDirectArray().Add(lNormalP3);
+		lNormalElement->GetDirectArray().Add(lNormalP4);
+		lNormalElement->GetDirectArray().Add(lNormalP4);
+		lNormalElement->GetDirectArray().Add(lNormalP4);
+
+
+		// Array of polygon vertices.
+		int lPolygonVertices[] = { 0, 3, 2, 1,
+			4, 5, 6,
+			7, 8, 9,
+			10, 11, 12,
+			13, 14, 15 };
+
+		// Set material mapping.
+		FbxGeometryElementMaterial* lMaterialElement = lMesh->CreateElementMaterial();
+		lMaterialElement->SetMappingMode(FbxGeometryElement::eByPolygon);
+		lMaterialElement->SetReferenceMode(FbxGeometryElement::eIndexToDirect);
+
+		// Create polygons. Assign material indices.
+
+		// Pyramid base.
+		lMesh->BeginPolygon(0); // Material index.
+
+		for (j = 0; j < 4; j++)
+		{
+			lMesh->AddPolygon(lPolygonVertices[j]); // Control point index.
+		}
+
+		lMesh->EndPolygon();
+
+		// Pyramid sides.
+		for (i = 1; i < 5; i++)
+		{
+			lMesh->BeginPolygon(i); // Material index.
+
+			for (j = 0; j < 3; j++)
+			{
+				lMesh->AddPolygon(lPolygonVertices[4 + 3 * (i - 1) + j]); // Control point index.
+			}
+
+			lMesh->EndPolygon();
+		}
+
+
+		FbxNode* lNode = FbxNode::Create(mScene, "Created_Node");
+
+		lNode->SetNodeAttribute(lMesh);
+
+		// TO DO: Adjust for Pyramids
+		// CreateMaterials(pScene, lMesh);
+
+		return lNode;
+	}
+	
+		
+}
+
 // main
 int main(int argc, char** argv)
 {
@@ -264,12 +412,17 @@ int main(int argc, char** argv)
 	FbxIOSettings* ios = FbxIOSettings::Create(lManager, IOSROOT);
 	lManager->SetIOSettings(ios);
 
+
+	// create scene for our created mesh
+	FbxScene* lSceneCreated = CreateScene();
+	// create model from inputs 
+	FbxNode* lMeshNodeCreated = CreateMesh(lSceneCreated);
 	// create an importer
 	FbxImporter* lImporter = FbxImporter::Create(lManager, "");
 
 	// use first argument as file name for importer
 	// TODO: shouldn't hard code this
-	if (!lImporter->Initialize("C:\\Users\\Thomas Twist\\source\\repos\\Terrain_Texture\\Debug\\terrain2.fbx", -1, lManager->GetIOSettings()))
+	if (!lImporter->Initialize("C:\\Users\\thoma\\modelcreator\\ModelCreator\\Debug\\terrain.fbx", -1, lManager->GetIOSettings()))
 	{
 		printf("Failure when initializing importer \n");
 		printf("Error returned: %s\n\n", lImporter->GetStatus().GetErrorString());
@@ -309,7 +462,7 @@ int main(int argc, char** argv)
 
 	bool r;
 
-	r = SaveScene(lManager, lScene, "C:\\Users\\Thomas Twist\\source\\repos\\Terrain_Texture\\Debug\\terrainexported6.fbx", -1, false);
+	r = SaveScene(lManager, lScene, "C:\\Users\\thoma\\modelcreator\\ModelCreator\\Debug\\terrainexported7.fbx", -1, false);
 	if (r)
 	{
 		printf("Export succeeded \n");
