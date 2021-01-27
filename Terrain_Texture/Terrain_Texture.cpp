@@ -107,7 +107,7 @@ void CreateTexture(FbxScene* pScene)
 
 
 
-
+// apply genericized materials
 void CreateMaterial(FbxScene* pScene)
 {
 	FbxString lMaterialName = "material";
@@ -269,7 +269,7 @@ FbxScene* CreateScene()
 }
 
 // Create materials for pyramid.
-void CreateMaterials(FbxScene* pScene, FbxMesh* pMesh)
+void CreatePyramidMaterials(FbxScene* pScene, FbxMesh* pMesh)
 {
 	int i;
 
@@ -287,7 +287,7 @@ void CreateMaterials(FbxScene* pScene, FbxMesh* pMesh)
 
 		// Generate primary and secondary colors.
 		lMaterial->Emissive.Set(lBlack);
-		lMaterial->Ambient.Set(lWhite);
+		lMaterial->Ambient.Set(lRed);
 		lColor = FbxDouble3(i > 2 ? 1.0 : 0.0,
 			i > 0 && i < 4 ? 1.0 : 0.0,
 			i % 2 ? 0.0 : 1.0);
@@ -502,7 +502,7 @@ FbxNode* CreateMesh(FbxString mType, FbxScene* mScene)
 		lNode->SetNodeAttribute(lMesh);
 
 		// TO DO: Adjust for Pyramids
-		CreateMaterials(mScene, lMesh);
+		CreatePyramidMaterials(mScene, lMesh);
 
 		return lNode;
 	}
